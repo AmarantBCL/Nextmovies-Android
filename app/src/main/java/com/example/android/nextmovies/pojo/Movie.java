@@ -62,4 +62,18 @@ public class Movie {
     public int getVotes() {
         return votes;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", overview='" + overview + '\'' +
+                ", posterPath='" + posterPath + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", averageVote=" + averageVote +
+                ", votes=" + votes +
+                '}';
+    }
 }

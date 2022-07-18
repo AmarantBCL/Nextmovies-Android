@@ -1,10 +1,12 @@
 package com.example.android.nextmovies.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -19,11 +21,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-    private List<Movie> movies = new ArrayList<>();
+    public List<Movie> movies = new ArrayList<>();
+    private OnReachEndListener reachEndListener;
+
+    public interface OnReachEndListener {
+        void onReachEnd();
+    }
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
+    }
+
+    public void setOnReachEndListener(OnReachEndListener reachEndListener) {
+        this.reachEndListener = reachEndListener;
     }
 
     @NonNull
@@ -51,6 +62,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         holder.textViewRating.setText(String.valueOf(rating));
         holder.textViewRating.setBackground(ContextCompat.getDrawable(
                 holder.itemView.getContext(), backgroundId));
+        if (position >= movies.size() - 6 && reachEndListener != null) {
+            reachEndListener.onReachEnd();
+        }
     }
 
     @Override

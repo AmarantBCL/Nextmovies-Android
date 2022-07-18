@@ -1,12 +1,10 @@
 package com.example.android.nextmovies.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -21,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-    public List<Movie> movies = new ArrayList<>();
+    private List<Movie> movies = new ArrayList<>();
     private OnItemClickListener itemClickListener;
     private OnReachEndListener reachEndListener;
 

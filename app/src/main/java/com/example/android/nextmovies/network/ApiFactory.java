@@ -6,6 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiFactory {
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
+    public static final String TRAILERS_URL = "https://api.themoviedb.org/3/movie/616037/";
     public static final String POSTER_URL = "https://image.tmdb.org/t/p/w500/";
 
     private static final Retrofit retrofit = new Retrofit.Builder()

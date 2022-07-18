@@ -22,7 +22,12 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     public List<Movie> movies = new ArrayList<>();
+    private OnItemClickListener itemClickListener;
     private OnReachEndListener reachEndListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Movie movie);
+    }
 
     public interface OnReachEndListener {
         void onReachEnd();
@@ -31,6 +36,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     public void setOnReachEndListener(OnReachEndListener reachEndListener) {
@@ -65,6 +74,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         if (position >= movies.size() - 6 && reachEndListener != null) {
             reachEndListener.onReachEnd();
         }
+        holder.itemView.setOnClickListener(v -> {
+            if (itemClickListener != null) {
+                itemClickListener.onItemClick(movie);
+            }
+        });
     }
 
     @Override

@@ -61,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
                 viewModel.loadMovies();
             }
         });
+        adapter.setOnItemClickListener(new MovieAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Movie movie) {
+                startActivity(DetailsActivity.newIntent(MainActivity.this, movie));
+            }
+        });
     }
 
     private void initViews() {

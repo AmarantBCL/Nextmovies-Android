@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -75,7 +76,11 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         progressBar = findViewById(R.id.pbar_loading);
         recyclerView = findViewById(R.id.recycler_view_movies);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
     }
 
     @Override

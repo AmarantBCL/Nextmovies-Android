@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".DetailsActivity">
+
+    <ImageView
+        android:id="@+id/img_big_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/big_poster"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_big_poster"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/regular_margin"
+                android:textSize="@dimen/header_size"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title" />
+
+            <TextView
+                android:id="@+id/tv_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/regular_margin"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="@dimen/header_size"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                tools:text="1998" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/regular_margin"
+                android:textSize="@dimen/header_size"
+                app:layout_constraintTop_toBottomOf="@id/tv_year"
+                tools:text="Some very very very long text..." />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_trailers" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/img_star"
+        android:layout_width="@dimen/star_size"
+        android:layout_height="@dimen/star_size"
+        android:layout_margin="@dimen/big_margin"
+        android:contentDescription="@string/add_remove_to_favorites"
+        app:layout_constraintEnd_toEndOf="@id/img_big_poster"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@android:drawable/btn_star_big_on" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

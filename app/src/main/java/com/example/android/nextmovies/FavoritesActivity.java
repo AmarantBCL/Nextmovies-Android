@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -30,7 +31,11 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewFavs = findViewById(R.id.recycler_view_favs);
-        recyclerViewFavs.setLayoutManager(new GridLayoutManager(this, 2));
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerViewFavs.setLayoutManager(new GridLayoutManager(this, 4));
+        } else {
+            recyclerViewFavs.setLayoutManager(new GridLayoutManager(this, 2));
+        }
         adapter = new MovieAdapter();
         recyclerViewFavs.setAdapter(adapter);
         viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);

@@ -66,7 +66,7 @@ public class DetailsViewModel extends AndroidViewModel {
     }
 
     public void loadTrailers(int id) {
-        Disposable disposable = ApiFactory.apiService.loadTrailers(id)
+        Disposable disposable = ApiFactory.apiService.loadTrailers(id, ApiFactory.LANG)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<TrailerResponse, List<Trailer>>() {

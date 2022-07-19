@@ -102,6 +102,10 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        imageViewPoster.setOnClickListener(v -> {
+            startActivity(FavoritesActivity.newIntent(DetailsActivity.this));
+        });
     }
 
     public static Intent newIntent(Context context, Movie movie) {

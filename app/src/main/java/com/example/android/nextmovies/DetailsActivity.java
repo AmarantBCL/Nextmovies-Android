@@ -2,22 +2,29 @@ package com.example.android.nextmovies;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.RoomDatabase;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.nextmovies.adapters.ReviewAdapter;
 import com.example.android.nextmovies.adapters.TrailerAdapter;
 import com.example.android.nextmovies.architecture.DetailsViewModel;
+import com.example.android.nextmovies.database.MovieDatabase;
 import com.example.android.nextmovies.network.ApiFactory;
 import com.example.android.nextmovies.pojo.Movie;
 import com.example.android.nextmovies.pojo.Review;
@@ -26,12 +33,14 @@ import com.example.android.nextmovies.utils.DateUtils;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class DetailsActivity extends AppCompatActivity {
     private static final String EXTRA_MOVIE = "movie";
 
     private RecyclerView recyclerViewTrailers, recyclerViewReviews;
     private LinearLayout linearLayout;
-    private ImageView imageViewPoster;
+    private ImageView imageViewPoster, imageViewStar;
     private TextView textViewTitle, textViewYear, textViewDesc;
 
     private DetailsViewModel viewModel;
@@ -79,6 +88,20 @@ public class DetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Drawable starOn = ContextCompat.getDrawable(this, android.R.drawable.btn_star_big_on);
+        Drawable starOff = ContextCompat.getDrawable(this, android.R.drawable.btn_star_big_off);
+        viewModel.getFavoriteMovie(movie.getId()).observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(Movie favoriteMovie) {
+                if (favoriteMovie == null) {
+                    imageViewStar.setImageDrawable(starOff);
+                    imageViewStar.setOnClickListener(v -> viewModel.addFavoriteMovie(movie));
+                } else {
+                    imageViewStar.setImageDrawable(starOn);
+                    imageViewStar.setOnClickListener(v -> viewModel.deleteFavoriteMovie(movie.getId()));
+                }
+            }
+        });
     }
 
     public static Intent newIntent(Context context, Movie movie) {
@@ -95,5 +118,6 @@ public class DetailsActivity extends AppCompatActivity {
         textViewTitle = findViewById(R.id.tv_title);
         textViewYear = findViewById(R.id.tv_year);
         textViewDesc = findViewById(R.id.tv_description);
+        imageViewStar = findViewById(R.id.img_star);
     }
 }

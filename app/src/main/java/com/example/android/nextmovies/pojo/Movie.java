@@ -1,10 +1,15 @@
 package com.example.android.nextmovies.pojo;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+@Entity(tableName = "favorites")
 public class Movie implements Serializable {
+    @PrimaryKey
     @SerializedName("id")
     private int id;
     @SerializedName("title")

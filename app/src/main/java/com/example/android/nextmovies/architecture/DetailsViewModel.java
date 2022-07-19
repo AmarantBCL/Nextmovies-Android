@@ -8,7 +8,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.android.nextmovies.database.MovieDao;
+import com.example.android.nextmovies.database.MovieDatabase;
 import com.example.android.nextmovies.network.ApiFactory;
+import com.example.android.nextmovies.pojo.Movie;
 import com.example.android.nextmovies.pojo.Review;
 import com.example.android.nextmovies.pojo.ReviewResponse;
 import com.example.android.nextmovies.pojo.Trailer;
@@ -25,12 +28,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class DetailsViewModel extends AndroidViewModel {
     private static final String TAG = "DetailsViewModel";
+
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final MutableLiveData<List<Trailer>> trailers = new MutableLiveData<>();
     private final MutableLiveData<List<Review>> reviews = new MutableLiveData<>();
+    private final MovieDao movieDao;
 
     public DetailsViewModel(@NonNull Application application) {
         super(application);
+        movieDao = MovieDatabase.getInstance(application).getMovieDao();
     }
 
     public LiveData<List<Trailer>> getTrailers() {
@@ -39,6 +45,24 @@ public class DetailsViewModel extends AndroidViewModel {
 
     public LiveData<List<Review>> getReviews() {
         return reviews;
+    }
+
+    public LiveData<Movie> getFavoriteMovie(int id) {
+        return movieDao.getFavorite(id);
+    }
+
+    public void addFavoriteMovie(Movie movie) {
+        Disposable disposable = movieDao.addFavorite(movie)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+        compositeDisposable.add(disposable);
+    }
+
+    public void deleteFavoriteMovie(int id) {
+        Disposable disposable = movieDao.deleteFavorite(id)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+        compositeDisposable.add(disposable);
     }
 
     public void loadTrailers(int id) {

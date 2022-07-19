@@ -23,6 +23,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainViewModel extends AndroidViewModel {
     private static final String LOG_TAG = "MainViewModel";
+
     private final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();

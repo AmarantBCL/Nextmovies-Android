@@ -46,7 +46,7 @@
             android:padding="8dp"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@id/tv_year"
-            tools:text="@tools:sample/lorem/random" />
+            tools:text="Some very very very long text..." />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_trailers"
@@ -54,8 +54,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_description"
-            tools:listitem="@layout/trailer_list_item" />
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_reviews"
@@ -63,8 +62,18 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_trailers"
-            tools:listitem="@layout/review_list_item" />
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_trailers" />
+
+        <ImageView
+            android:id="@+id/img_star"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="@id/img_big_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_big_poster"
+            app:srcCompat="@android:drawable/btn_star_big_on" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

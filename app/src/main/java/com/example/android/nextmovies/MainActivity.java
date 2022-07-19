@@ -2,6 +2,8 @@ package com.example.android.nextmovies;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,7 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.nextmovies.adapters.MovieAdapter;
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private TextView textViewPopular, textViewTopRated;
+    private SwitchCompat switchSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +77,46 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(DetailsActivity.newIntent(MainActivity.this, movie));
             }
         });
+        switchSort.setChecked(true);
+        switchSort.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switchSorting(isChecked);
+            }
+        });
+        textViewPopular.setOnClickListener(v -> {
+            if (!switchSort.isChecked()) return;
+            switchSort.setChecked(false);
+        });
+        textViewTopRated.setOnClickListener(v -> {
+            if (switchSort.isChecked()) return;
+            switchSort.setChecked(true);
+        });
+        switchSort.setChecked(false);
+        viewModel.getSort().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                viewModel.loadMovies();
+            }
+        });
+    }
+
+    private void switchSorting(boolean isChecked) {
+        viewModel.switchSorting(isChecked);
+        if (isChecked) {
+            textViewPopular.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
+            textViewTopRated.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.pink));
+        } else {
+            textViewPopular.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.pink));
+            textViewTopRated.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.white));
+        }
     }
 
     private void initViews() {
         progressBar = findViewById(R.id.pbar_loading);
+        textViewPopular = findViewById(R.id.tv_popular);
+        textViewTopRated = findViewById(R.id.tv_top_rated);
+        switchSort = findViewById(R.id.switch_sort);
         recyclerView = findViewById(R.id.recycler_view_movies);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));

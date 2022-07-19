@@ -12,6 +12,7 @@ import com.example.android.nextmovies.network.ApiFactory;
 import com.example.android.nextmovies.pojo.Movie;
 import com.example.android.nextmovies.pojo.MovieResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -23,9 +24,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainViewModel extends AndroidViewModel {
     private static final String LOG_TAG = "MainViewModel";
+    private static final String SORT_POPULAR = "popular";
+    private static final String SORT_TOP_RATED = "top_rated";
 
     private final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+    private final MutableLiveData<String> sort = new MutableLiveData<>(SORT_POPULAR);
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private int page = 1;
 
@@ -42,10 +46,20 @@ public class MainViewModel extends AndroidViewModel {
         return isLoading;
     }
 
+    public LiveData<String> getSort() {
+        return sort;
+    }
+
+    public void switchSorting(boolean isChecked) {
+        page = 1;
+        movies.setValue(new ArrayList<>());
+        sort.setValue(isChecked ? SORT_TOP_RATED : SORT_POPULAR);
+    }
+
     public void loadMovies() {
         Boolean loading = isLoading.getValue();
         if (loading != null && loading) return;
-        Disposable disposable = ApiFactory.apiService.loadMovies(page, ApiFactory.LANG)
+        Disposable disposable = ApiFactory.apiService.loadMovies(sort.getValue(), page, ApiFactory.LANG)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {

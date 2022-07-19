@@ -5,4 +5,6 @@
     <string name="big_poster">Большой постер</string>
     <string name="add_remove_to_favorites">Добавить/удалить из избранного</string>
     <string name="play_button">Кнопка воспроизведения</string>
+    <string name="top_rated">Самые рейтинговые</string>
+    <string name="most_popular">Наиболее популярные</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.android.nextmovies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.android.nextmovies.adapters.MovieAdapter;
 import com.example.android.nextmovies.architecture.FavoritesViewModel;
@@ -26,6 +28,7 @@ public class FavoritesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewFavs = findViewById(R.id.recycler_view_favs);
         recyclerViewFavs.setLayoutManager(new GridLayoutManager(this, 2));
         adapter = new MovieAdapter();
@@ -44,6 +47,15 @@ public class FavoritesActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static Intent newIntent(Context context) {

@@ -90,7 +90,7 @@ public class DetailsViewModel extends AndroidViewModel {
     }
 
     public void loadReviews(int id) {
-        Disposable disposable = ApiFactory.apiService.loadReviews(id)
+        Disposable disposable = ApiFactory.apiService.loadReviews(id, ApiFactory.LANG)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<ReviewResponse, List<Review>>() {

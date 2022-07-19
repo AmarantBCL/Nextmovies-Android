@@ -1,5 +1,6 @@
 package com.example.android.nextmovies;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -104,6 +106,15 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public static Intent newIntent(Context context, Movie movie) {
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra(EXTRA_MOVIE, movie);
@@ -119,5 +130,6 @@ public class DetailsActivity extends AppCompatActivity {
         textViewYear = findViewById(R.id.tv_year);
         textViewDesc = findViewById(R.id.tv_description);
         imageViewStar = findViewById(R.id.img_star);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

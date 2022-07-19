@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/small_margin"
-    app:cardBackgroundColor="?attr/colorPrimary"
+    app:cardBackgroundColor="@color/purple_500"
     app:cardCornerRadius="@dimen/big_corner_radius"
     app:cardUseCompatPadding="true">
 

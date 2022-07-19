@@ -17,5 +17,5 @@ public interface ApiService {
     Single<TrailerResponse> loadTrailers(@Path("movie_id") int id, @Query("language") String lang);
 
     @GET("movie/{movie_id}/reviews?api_key=692a162b1d95c63d2cca4046b3e7f851")
-    Single<ReviewResponse> loadReviews(@Path("movie_id") int id);
+    Single<ReviewResponse> loadReviews(@Path("movie_id") int id, @Query("language") String lang);
 }

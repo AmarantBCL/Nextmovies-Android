@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:contentDescription="@null"
+            android:contentDescription="@string/big_poster"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars" />
 
@@ -23,8 +23,8 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="16sp"
+            android:padding="@dimen/regular_margin"
+            android:textSize="@dimen/header_size"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/img_big_poster"
             tools:text="Title" />
@@ -33,9 +33,9 @@
             android:id="@+id/tv_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="@dimen/regular_margin"
             android:textColor="@android:color/holo_orange_light"
-            android:textSize="16sp"
+            android:textSize="@dimen/header_size"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:text="1998" />
 
@@ -43,8 +43,8 @@
             android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="16sp"
+            android:padding="@dimen/regular_margin"
+            android:textSize="@dimen/header_size"
             app:layout_constraintTop_toBottomOf="@id/tv_year"
             tools:text="Some very very very long text..." />
 
@@ -66,10 +66,10 @@
 
         <ImageView
             android:id="@+id/img_star"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="16dp"
-            android:contentDescription="@null"
+            android:layout_width="@dimen/star_size"
+            android:layout_height="@dimen/star_size"
+            android:layout_margin="@dimen/big_margin"
+            android:contentDescription="@string/add_remove_to_favorites"
             app:layout_constraintBottom_toBottomOf="@id/img_big_poster"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img_big_poster"

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Nextmovies</string>
-    <string name="favorites">Избранное</string>
+    <string name="favorites">Favorites</string>
+    <string name="big_poster">Big poster</string>
+    <string name="add_remove_to_favorites">Add/remove to favorites</string>
+    <string name="play_button">Play button</string>
 </resources>

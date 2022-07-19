@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_margin="@dimen/small_margin"
     app:cardBackgroundColor="?attr/colorPrimary"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="@dimen/big_corner_radius"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="8dp"
+            android:padding="@dimen/regular_margin"
             android:textColor="@color/white"
             tools:text="Trailer #1" />
 
@@ -28,8 +28,8 @@
             android:id="@+id/img_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@null"
+            android:layout_marginEnd="@dimen/regular_margin"
+            android:contentDescription="@string/play_button"
             android:src="@drawable/ic_play" />
 
     </LinearLayout>

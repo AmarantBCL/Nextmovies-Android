@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="4dp"
+    android:layout_margin="@dimen/small_margin"
+    app:cardCornerRadius="@dimen/small_corner_radius"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:id="@+id/tv_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="@dimen/regular_margin"
             android:textColor="@color/white"
             android:textStyle="bold"
             tools:text="Author" />
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:autoLink="web"
             android:linksClickable="true"
-            android:padding="8dp"
+            android:padding="@dimen/regular_margin"
             android:textColor="@color/white"
             android:textColorLink="@color/purple_500"
             tools:text="Text is: https://google.com" />

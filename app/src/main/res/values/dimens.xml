@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="star_size">36dp</dimen>
+    <dimen name="big_margin">16dp</dimen>
+    <dimen name="regular_margin">8dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
+    <dimen name="header_size">16sp</dimen>
+    <dimen name="big_corner_radius">8dp</dimen>
+    <dimen name="small_corner_radius">4dp</dimen>
+    <dimen name="min_pic_height">250dp</dimen>
+</resources>

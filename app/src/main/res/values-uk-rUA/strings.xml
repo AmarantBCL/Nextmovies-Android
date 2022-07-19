@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nextmovies</string>
+    <string name="favorites">Обране</string>
+    <string name="big_poster">Великий постер</string>
+    <string name="add_remove_to_favorites">Додати/видалити з обраного</string>
+    <string name="play_button">Кнопка програвання</string>
+</resources>

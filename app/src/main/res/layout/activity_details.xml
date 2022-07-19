@@ -57,6 +57,15 @@
             app:layout_constraintTop_toBottomOf="@id/tv_description"
             tools:listitem="@layout/trailer_list_item" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_trailers"
+            tools:listitem="@layout/review_list_item" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

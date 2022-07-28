@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isSearching) {
                     linearTopPanel.setVisibility(View.GONE);
                     linearSearch.setVisibility(View.VISIBLE);
-                    editSearch.setText("");
+//                    editSearch.setText("");
                 } else {
                     linearTopPanel.setVisibility(View.VISIBLE);
                     linearSearch.setVisibility(View.GONE);

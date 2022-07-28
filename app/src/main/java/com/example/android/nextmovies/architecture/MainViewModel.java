@@ -34,6 +34,7 @@ public class MainViewModel extends AndroidViewModel {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private int page = 1;
     private String searchQuery;
+    private boolean reachedEnd = false;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -65,6 +66,8 @@ public class MainViewModel extends AndroidViewModel {
         Boolean loading = isLoading.getValue();
         if (loading != null && loading) return;
         if (isSearching.getValue() == true) {
+            searchMovie(searchQuery);
+//            Log.d("SDFHDSL", page + "");
             return;
         }
         Disposable disposable = ApiFactory.apiService.loadMovies(sort.getValue(), page, ApiFactory.LANG)
@@ -109,6 +112,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void startSearch(String name) {
+        preStartSearch();
         searchQuery = name;
         searchMovie(name);
     }
@@ -120,7 +124,8 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void searchMovie(String name) {
-        Disposable disposable = ApiFactory.apiService.searchMovies(name)
+        if (reachedEnd) return;
+        Disposable disposable = ApiFactory.apiService.searchMovies(name, page, ApiFactory.LANG)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
@@ -138,7 +143,17 @@ public class MainViewModel extends AndroidViewModel {
                 .subscribe(new Consumer<MovieResponse>() {
                     @Override
                     public void accept(MovieResponse movieResponse) throws Throwable {
-                        movies.setValue(movieResponse.getMovies());
+                        List<Movie> loadedMovies = movies.getValue();
+                        if (loadedMovies != null) {
+                            if (movieResponse.getMovies().size() == 0) {
+                                reachedEnd = true;
+                            }
+                            loadedMovies.addAll(movieResponse.getMovies());
+                            movies.setValue(loadedMovies);
+                        } else {
+                            movies.setValue(movieResponse.getMovies());
+                        }
+                        page++;
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -151,6 +166,7 @@ public class MainViewModel extends AndroidViewModel {
 
     private void clearMovies() {
         page = 1;
+        reachedEnd = false;
         movies.setValue(new ArrayList<>());
     }
 

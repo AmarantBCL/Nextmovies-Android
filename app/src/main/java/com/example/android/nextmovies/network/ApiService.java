@@ -26,5 +26,6 @@ public interface ApiService {
     Single<CastResponse> loadCast(@Path("movie_id") int id, @Query("language") String lang);
 
     @GET("search/movie?api_key=692a162b1d95c63d2cca4046b3e7f851")
-    Single<MovieResponse> searchMovies(@Query("query") String query);
+    Single<MovieResponse> searchMovies(@Query("query") String query, @Query("page") int page,
+                                       @Query("language") String lang);
 }

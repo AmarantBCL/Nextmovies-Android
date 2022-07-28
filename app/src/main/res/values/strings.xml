@@ -6,4 +6,7 @@
     <string name="play_button">Play button</string>
     <string name="most_popular">Most popular</string>
     <string name="top_rated">Top rated</string>
+    <string name="search">Search</string>
+    <string name="search_movie">Search movie...</string>
+    <string name="to_main_menu">To main menu</string>
 </resources>

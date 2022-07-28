@@ -29,9 +29,11 @@ public class MainViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> isSearching = new MutableLiveData<>(false);
     private final MutableLiveData<String> sort = new MutableLiveData<>(SORT_POPULAR);
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private int page = 1;
+    private String searchQuery;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -46,19 +48,25 @@ public class MainViewModel extends AndroidViewModel {
         return isLoading;
     }
 
+    public LiveData<Boolean> getIsSearching() {
+        return isSearching;
+    }
+
     public LiveData<String> getSort() {
         return sort;
     }
 
     public void switchSorting(boolean isChecked) {
-        page = 1;
-        movies.setValue(new ArrayList<>());
+        clearMovies();
         sort.setValue(isChecked ? SORT_TOP_RATED : SORT_POPULAR);
     }
 
     public void loadMovies() {
         Boolean loading = isLoading.getValue();
         if (loading != null && loading) return;
+        if (isSearching.getValue() == true) {
+            return;
+        }
         Disposable disposable = ApiFactory.apiService.loadMovies(sort.getValue(), page, ApiFactory.LANG)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -93,6 +101,57 @@ public class MainViewModel extends AndroidViewModel {
                     }
                 });
         compositeDisposable.add(disposable);
+    }
+
+    public void preStartSearch() {
+        isSearching.setValue(true);
+        clearMovies();
+    }
+
+    public void startSearch(String name) {
+        searchQuery = name;
+        searchMovie(name);
+    }
+
+    public void stopSearch() {
+        isSearching.setValue(false);
+        clearMovies();
+        loadMovies();
+    }
+
+    public void searchMovie(String name) {
+        Disposable disposable = ApiFactory.apiService.searchMovies(name, ApiFactory.LANG)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Throwable {
+                        isLoading.setValue(true);
+                    }
+                })
+                .doAfterTerminate(new Action() {
+                    @Override
+                    public void run() throws Throwable {
+                        isLoading.setValue(false);
+                    }
+                })
+                .subscribe(new Consumer<MovieResponse>() {
+                    @Override
+                    public void accept(MovieResponse movieResponse) throws Throwable {
+                        movies.setValue(movieResponse.getMovies());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d(LOG_TAG, throwable.toString());
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    private void clearMovies() {
+        page = 1;
+        movies.setValue(new ArrayList<>());
     }
 
     @Override

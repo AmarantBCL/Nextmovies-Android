@@ -56,6 +56,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = movies.get(position);
         Glide.with(holder.itemView)
                 .load(ApiFactory.POSTER_URL + movie.getPosterPath())
+//                .placeholder(new ColorDrawable(Color.BLACK))
+                .placeholder(R.drawable.ic_poster_placeholder)
                 .into(holder.imageViewPoster);
         double rating = movie.getAverageVote();
         int backgroundId;

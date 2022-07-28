@@ -5,6 +5,9 @@
     <string name="big_poster">Большой постер</string>
     <string name="add_remove_to_favorites">Добавить/удалить из избранного</string>
     <string name="play_button">Кнопка воспроизведения</string>
-    <string name="top_rated">Самые рейтинговые</string>
-    <string name="most_popular">Наиболее популярные</string>
+    <string name="top_rated">Рейтинговые</string>
+    <string name="most_popular">Популярные</string>
+    <string name="search">Поиск</string>
+    <string name="search_movie">Найти фильм...</string>
+    <string name="to_main_menu">На главную</string>
 </resources>

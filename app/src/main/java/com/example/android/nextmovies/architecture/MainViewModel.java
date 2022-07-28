@@ -120,7 +120,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void searchMovie(String name) {
-        Disposable disposable = ApiFactory.apiService.searchMovies(name, ApiFactory.LANG)
+        Disposable disposable = ApiFactory.apiService.searchMovies(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {

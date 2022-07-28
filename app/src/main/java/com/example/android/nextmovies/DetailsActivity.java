@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.RoomDatabase;
 
@@ -23,11 +24,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.android.nextmovies.adapters.ActorAdapter;
 import com.example.android.nextmovies.adapters.ReviewAdapter;
 import com.example.android.nextmovies.adapters.TrailerAdapter;
 import com.example.android.nextmovies.architecture.DetailsViewModel;
 import com.example.android.nextmovies.database.MovieDatabase;
 import com.example.android.nextmovies.network.ApiFactory;
+import com.example.android.nextmovies.pojo.Actor;
 import com.example.android.nextmovies.pojo.Movie;
 import com.example.android.nextmovies.pojo.Review;
 import com.example.android.nextmovies.pojo.Trailer;
@@ -40,12 +43,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DetailsActivity extends AppCompatActivity {
     private static final String EXTRA_MOVIE = "movie";
 
-    private RecyclerView recyclerViewTrailers, recyclerViewReviews;
+    private RecyclerView recyclerViewCast, recyclerViewTrailers, recyclerViewReviews;
     private LinearLayout linearLayout;
     private ImageView imageViewPoster, imageViewStar;
     private TextView textViewTitle, textViewYear, textViewDesc;
 
     private DetailsViewModel viewModel;
+    private ActorAdapter castAdapter;
     private TrailerAdapter trailerAdapter;
     private ReviewAdapter reviewAdapter;
 
@@ -54,6 +58,8 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         initViews();
+        castAdapter = new ActorAdapter();
+        recyclerViewCast.setAdapter(castAdapter);
         trailerAdapter = new TrailerAdapter();
         recyclerViewTrailers.setAdapter(trailerAdapter);
         reviewAdapter = new ReviewAdapter();
@@ -67,6 +73,13 @@ public class DetailsActivity extends AppCompatActivity {
         textViewTitle.setText(movie.getTitle());
         textViewYear.setText(DateUtils.convertToYear(movie.getReleaseDate()));
         textViewDesc.setText(movie.getOverview());
+        viewModel.loadCast(movie.getId());
+        viewModel.getActors().observe(this, new Observer<List<Actor>>() {
+            @Override
+            public void onChanged(List<Actor> actors) {
+                castAdapter.setActors(actors);
+            }
+        });
         viewModel.loadTrailers(movie.getId());
         viewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
@@ -122,6 +135,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        recyclerViewCast = findViewById(R.id.recycler_view_cast);
+        recyclerViewCast.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewTrailers = findViewById(R.id.recycler_view_trailers);
         recyclerViewReviews = findViewById(R.id.recycler_view_reviews);
         linearLayout = findViewById(R.id.linear_layout);

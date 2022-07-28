@@ -1,5 +1,6 @@
 package com.example.android.nextmovies.network;
 
+import com.example.android.nextmovies.pojo.CastResponse;
 import com.example.android.nextmovies.pojo.MovieResponse;
 import com.example.android.nextmovies.pojo.ReviewResponse;
 import com.example.android.nextmovies.pojo.TrailerResponse;
@@ -21,6 +22,9 @@ public interface ApiService {
     @GET("movie/{movie_id}/reviews?api_key=692a162b1d95c63d2cca4046b3e7f851")
     Single<ReviewResponse> loadReviews(@Path("movie_id") int id, @Query("language") String lang);
 
+    @GET("movie/{movie_id}/credits?api_key=692a162b1d95c63d2cca4046b3e7f851")
+    Single<CastResponse> loadCast(@Path("movie_id") int id, @Query("language") String lang);
+
     @GET("search/movie?api_key=692a162b1d95c63d2cca4046b3e7f851")
-    Single<MovieResponse> searchMovies(@Query("query") String query, @Query("language") String lang);
+    Single<MovieResponse> searchMovies(@Query("query") String query);
 }

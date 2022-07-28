@@ -11,6 +11,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.android.nextmovies.database.MovieDao;
 import com.example.android.nextmovies.database.MovieDatabase;
 import com.example.android.nextmovies.network.ApiFactory;
+import com.example.android.nextmovies.pojo.Actor;
+import com.example.android.nextmovies.pojo.CastResponse;
 import com.example.android.nextmovies.pojo.Movie;
 import com.example.android.nextmovies.pojo.Review;
 import com.example.android.nextmovies.pojo.ReviewResponse;
@@ -30,6 +32,7 @@ public class DetailsViewModel extends AndroidViewModel {
     private static final String TAG = "DetailsViewModel";
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final MutableLiveData<List<Actor>> actors = new MutableLiveData<>();
     private final MutableLiveData<List<Trailer>> trailers = new MutableLiveData<>();
     private final MutableLiveData<List<Review>> reviews = new MutableLiveData<>();
     private final MovieDao movieDao;
@@ -37,6 +40,10 @@ public class DetailsViewModel extends AndroidViewModel {
     public DetailsViewModel(@NonNull Application application) {
         super(application);
         movieDao = MovieDatabase.getInstance(application).getMovieDao();
+    }
+
+    public LiveData<List<Actor>> getActors() {
+        return actors;
     }
 
     public LiveData<List<Trailer>> getTrailers() {
@@ -62,6 +69,30 @@ public class DetailsViewModel extends AndroidViewModel {
         Disposable disposable = movieDao.deleteFavorite(id)
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+        compositeDisposable.add(disposable);
+    }
+
+    public void loadCast(int id) {
+        Disposable disposable = ApiFactory.apiService.loadCast(id, ApiFactory.LANG)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<CastResponse, List<Actor>>() {
+                    @Override
+                    public List<Actor> apply(CastResponse castResponse) throws Throwable {
+                        return castResponse.getActors();
+                    }
+                })
+                .subscribe(new Consumer<List<Actor>>() {
+                    @Override
+                    public void accept(List<Actor> actorList) throws Throwable {
+                        actors.setValue(actorList);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d(TAG, throwable.toString());
+                    }
+                });
         compositeDisposable.add(disposable);
     }
 

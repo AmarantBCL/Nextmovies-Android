@@ -58,13 +58,34 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_year"
                 tools:text="Some very very very long text..." />
 
+            <TextView
+                android:id="@+id/tv_cast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/regular_margin"
+                android:text="@string/cast"
+                android:textSize="@dimen/header_size"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_cast"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_cast"
+                tools:listitem="@layout/actor_list_item" />
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_trailers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/tv_description" />
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_cast" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_reviews"

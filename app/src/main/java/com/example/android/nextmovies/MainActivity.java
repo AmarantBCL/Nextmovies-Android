@@ -55,25 +55,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        adapter = new MovieAdapter();
-        recyclerView.setAdapter(adapter);
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(List<Movie> movies) {
-                adapter.setMovies(movies);
-            }
-        });
-        viewModel.getIsLoading().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isLoading) {
-                if (isLoading) {
-                    progressBar.setVisibility(View.VISIBLE);
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
+        observeViewModel();
+        setClickListeners();
+    }
+
+    private void setClickListeners() {
         adapter.setOnReachEndListener(new MovieAdapter.OnReachEndListener() {
             @Override
             public void onReachEnd() {
@@ -102,12 +89,6 @@ public class MainActivity extends AppCompatActivity {
             switchSort.setChecked(true);
         });
         switchSort.setChecked(false);
-        viewModel.getSort().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                viewModel.loadMovies();
-            }
-        });
         editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -120,13 +101,37 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void observeViewModel() {
+        viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                adapter.setMovies(movies);
+            }
+        });
+        viewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isLoading) {
+                if (isLoading) {
+                    progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+        viewModel.getSort().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                viewModel.loadMovies();
+            }
+        });
         viewModel.getIsSearching().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSearching) {
                 if (isSearching) {
                     linearTopPanel.setVisibility(View.GONE);
                     linearSearch.setVisibility(View.VISIBLE);
-//                    editSearch.setText("");
                 } else {
                     linearTopPanel.setVisibility(View.VISIBLE);
                     linearSearch.setVisibility(View.GONE);
@@ -160,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         }
+        adapter = new MovieAdapter();
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -178,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item_search:
                 item.setVisible(false);
                 optionMenu.findItem(R.id.item_main).setVisible(true);
+                editSearch.setText("");
                 viewModel.preStartSearch();
                 break;
             case R.id.item_main:

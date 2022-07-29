@@ -43,6 +43,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class DetailsActivity extends AppCompatActivity {
     private static final String EXTRA_MOVIE = "movie";
 
+    private Movie movie;
+
     private RecyclerView recyclerViewCast, recyclerViewTrailers, recyclerViewReviews;
     private LinearLayout linearLayout;
     private ImageView imageViewPoster, imageViewStar;
@@ -58,14 +60,14 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         initViews();
-        castAdapter = new ActorAdapter();
-        recyclerViewCast.setAdapter(castAdapter);
-        trailerAdapter = new TrailerAdapter();
-        recyclerViewTrailers.setAdapter(trailerAdapter);
-        reviewAdapter = new ReviewAdapter();
-        recyclerViewReviews.setAdapter(reviewAdapter);
         viewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
-        Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
+        movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
+        setMovieDetails();
+        observeViewModel();
+        setClickListeners();
+    }
+
+    private void setMovieDetails() {
         Glide.with(this)
                 .load(ApiFactory.POSTER_URL + movie.getPosterPath())
                 .placeholder(R.drawable.ic_poster_placeholder)
@@ -73,6 +75,21 @@ public class DetailsActivity extends AppCompatActivity {
         textViewTitle.setText(movie.getTitle());
         textViewYear.setText(DateUtils.convertToYear(movie.getReleaseDate()));
         textViewDesc.setText(movie.getOverview());
+    }
+
+    private void setClickListeners() {
+        trailerAdapter.setOnTrailerClickListener(new TrailerAdapter.OnTrailerClickListener() {
+            @Override
+            public void onTrailerClick(Trailer trailer) {
+                String url = ApiFactory.YOUTUBE_URL + trailer.getUrl();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void observeViewModel() {
         viewModel.loadCast(movie.getId());
         viewModel.getActors().observe(this, new Observer<List<Actor>>() {
             @Override
@@ -92,15 +109,6 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Review> reviews) {
                 reviewAdapter.setReviews(reviews);
-            }
-        });
-        trailerAdapter.setOnTrailerClickListener(new TrailerAdapter.OnTrailerClickListener() {
-            @Override
-            public void onTrailerClick(Trailer trailer) {
-                String url = ApiFactory.YOUTUBE_URL + trailer.getUrl();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                startActivity(intent);
             }
         });
         Drawable starOn = ContextCompat.getDrawable(this, android.R.drawable.btn_star_big_on);
@@ -139,6 +147,12 @@ public class DetailsActivity extends AppCompatActivity {
         recyclerViewCast.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewTrailers = findViewById(R.id.recycler_view_trailers);
         recyclerViewReviews = findViewById(R.id.recycler_view_reviews);
+        castAdapter = new ActorAdapter();
+        recyclerViewCast.setAdapter(castAdapter);
+        trailerAdapter = new TrailerAdapter();
+        recyclerViewTrailers.setAdapter(trailerAdapter);
+        reviewAdapter = new ReviewAdapter();
+        recyclerViewReviews.setAdapter(reviewAdapter);
         linearLayout = findViewById(R.id.linear_layout);
         imageViewPoster = findViewById(R.id.img_big_poster);
         textViewTitle = findViewById(R.id.tv_title);

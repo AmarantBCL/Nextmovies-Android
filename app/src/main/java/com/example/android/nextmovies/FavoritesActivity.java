@@ -29,6 +29,32 @@ public class FavoritesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+        initViews();
+        viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
+        observeViewModel();
+        setClickListeners();
+    }
+
+    private void setClickListeners() {
+        adapter.setOnItemClickListener(new MovieAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Movie movie) {
+                Intent intent = DetailsActivity.newIntent(FavoritesActivity.this, movie);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void observeViewModel() {
+        viewModel.getFavorites().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                adapter.setMovies(movies);
+            }
+        });
+    }
+
+    private void initViews() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerViewFavs = findViewById(R.id.recycler_view_favs);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -38,20 +64,6 @@ public class FavoritesActivity extends AppCompatActivity {
         }
         adapter = new MovieAdapter();
         recyclerViewFavs.setAdapter(adapter);
-        viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
-        viewModel.getFavorites().observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(List<Movie> movies) {
-                adapter.setMovies(movies);
-            }
-        });
-        adapter.setOnItemClickListener(new MovieAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Movie movie) {
-                Intent intent = DetailsActivity.newIntent(FavoritesActivity.this, movie);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

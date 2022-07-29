@@ -1,5 +1,7 @@
 package com.example.android.nextmovies.adapters;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Movie movie = movies.get(position);
         Glide.with(holder.itemView)
                 .load(ApiFactory.POSTER_URL + movie.getPosterPath())
-//                .placeholder(new ColorDrawable(Color.BLACK))
-                .placeholder(R.drawable.ic_poster_placeholder)
+                .placeholder(new ColorDrawable(Color.BLACK))
                 .into(holder.imageViewPoster);
         double rating = movie.getAverageVote();
         int backgroundId;
